@@ -1,0 +1,2756 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Полный курс Python - 30 уроков с нуля до профи</title>
+    <style>
+        /* Стили остаются такими же как в предыдущей версии */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .course-image {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #306998, #4b8bb4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #FFD43B;
+        }
+        
+        .course-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #306998, #1e4a6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .main-menu {
+            display: flex;
+            gap: 1rem;
+            margin-left: auto;
+            background: #f0f2f5;
+            padding: 0.3rem;
+            border-radius: 50px;
+        }
+        
+        .tab-link {
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            cursor: pointer;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .tab-link:hover {
+            background: rgba(48, 105, 152, 0.1);
+        }
+        
+        .tab-link.active {
+            background: linear-gradient(135deg, #306998, #1e4a6b);
+            color: white;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1600px;
+            margin: 2rem auto;
+            gap: 2rem;
+            padding: 0 2rem;
+            height: calc(100vh - 120px);
+        }
+        
+        .sidebar {
+            width: 350px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            background: linear-gradient(135deg, #306998, #1e4a6b);
+            color: white;
+            padding: 1.5rem;
+        }
+        
+        .sidebar-header h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lessons-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            list-style: none;
+        }
+        
+        .lesson-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+        
+        .lesson-link:hover {
+            background: #f8f9fa;
+            border-left-color: #306998;
+        }
+        
+        .lesson-link.active-lesson {
+            background: #e3f2fd;
+            border-left-color: #306998;
+        }
+        
+        .lesson-number {
+            background: #306998;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .active-lesson .lesson-number {
+            background: #FFD43B;
+            color: #306998;
+        }
+        
+        .lesson-info {
+            flex: 1;
+        }
+        
+        .lesson-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .lesson-duration {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .lesson-status {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ddd;
+        }
+        
+        .lesson-status.completed {
+            background: #4CAF50;
+        }
+        
+        .content-area {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .content-header {
+            padding: 2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .content-title {
+            font-size: 2rem;
+            color: #1e4a6b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-meta {
+            display: flex;
+            gap: 2rem;
+            color: #666;
+        }
+        
+        .content-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+        
+        .theory-section, .practice-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #306998;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #FFD43B;
+            padding-bottom: 0.5rem;
+        }
+        
+        .theory-block {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .theory-block h3 {
+            color: #1e4a6b;
+            margin-bottom: 1rem;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+        
+        .code-block pre {
+            margin: 0;
+            color: #d4d4d4;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #306998;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .task-block {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .task-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #306998;
+        }
+        
+        .difficulty-easy {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .difficulty-medium {
+            background: #fff3e0;
+            color: #f57c00;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .difficulty-hard {
+            background: #ffebee;
+            color: #c62828;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .task-description {
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .task-example {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin: 1rem 0;
+            resize: vertical;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #306998;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #306998, #1e4a6b);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(48, 105, 152, 0.3);
+        }
+        
+        .btn-outline {
+            background: white;
+            color: #306998;
+            border: 1px solid #306998;
+        }
+        
+        .btn-outline:hover {
+            background: #306998;
+            color: white;
+        }
+        
+        .progress-footer {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD43B, #FFA500);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #306998;
+            color: white;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="course-image">🐍</div>
+            <div class="course-title">Python <span>Университет</span></div>
+        </div>
+        <nav class="main-menu">
+            <a href="#" class="tab-link active" data-tab="theory">📚 Теория</a>
+            <a href="#" class="tab-link" data-tab="practice">💻 Практика</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>📋 30 уроков Python</h3>
+                <p>От новичка до профессионала</p>
+            </div>
+            <ul class="lessons-list" id="lessons-list"></ul>
+            <div class="progress-footer">
+                <div class="progress-stats">
+                    <span>Прогресс</span>
+                    <span id="progress-text">0/30</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <div class="content-header">
+                <h1 class="content-title" id="content-title">Урок 1: Введение в Python</h1>
+                <div class="lesson-meta" id="lesson-meta"></div>
+            </div>
+
+            <div id="theory-content" class="content-body tab-content active-tab">
+                <div class="theory-section" id="theory-section"></div>
+            </div>
+
+            <div id="practice-content" class="content-body tab-content" style="display: none;">
+                <div class="practice-section" id="practice-section"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ============ ПОЛНЫЕ ДАННЫЕ ДЛЯ ВСЕХ 30 УРОКОВ ============
+        const lessons = {
+            1: {
+                title: "Введение в Python",
+                duration: "45 мин",
+                level: "Начинающий",
+                theory: {
+                    intro: "Python - это высокоуровневый язык программирования, созданный Гвидо ван Россумом в 1991 году. Название происходит от британского комедийного шоу 'Монти Пайтон'. Python известен своей простотой, читаемостью кода и мощными возможностями.",
+                    topics: [
+                        {
+                            title: "История и философия Python",
+                            content: `Python был создан в конце 1980-х годов и выпущен в 1991 году. Основные принципы философии Python (PEP 20):
+• Красивое лучше, чем уродливое
+• Явное лучше, чем неявное
+• Простое лучше, чем сложное
+• Сложное лучше, чем запутанное
+• Читаемость имеет значение
+
+Python используется в:
+• Веб-разработке (Django, Flask)
+• Научных вычислениях (NumPy, SciPy)
+• Анализе данных (Pandas)
+• Машинном обучении (TensorFlow, PyTorch)
+• Автоматизации задач
+• Создании игр (Pygame)`
+                        },
+                        {
+                            title: "Установка Python",
+                            content: `Подробная инструкция по установке:
+
+Windows:
+1. Перейдите на официальный сайт python.org
+2. Скачайте последнюю версию Python (3.x)
+3. Запустите установщик
+4. ОБЯЗАТЕЛЬНО отметьте "Add Python to PATH"
+5. Выберите "Install Now" или настройте установку
+6. Дождитесь завершения установки
+
+macOS:
+1. Установите Homebrew: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+2. Выполните: brew install python
+3. Или скачайте установщик с python.org
+
+Linux (Ubuntu/Debian):
+1. Обновите пакеты: sudo apt update
+2. Установите Python: sudo apt install python3 python3-pip
+3. Проверьте: python3 --version
+
+Проверка установки:
+Откройте терминал/командную строку и введите:
+python --version
+или
+python3 --version
+
+Должна отобразиться версия Python (например, Python 3.11.0)`
+                        },
+                        {
+                            title: "Среда разработки (IDE)",
+                            content: `Популярные среды для Python:
+
+1. PyCharm (рекомендуется для начинающих)
+   • Бесплатная Community версия
+   • Умное автодополнение кода
+   • Отладчик
+   • Интеграция с Git
+
+2. VS Code
+   • Легкий и быстрый
+   • Множество расширений
+   • Бесплатный
+   • Поддержка Jupyter Notebooks
+
+3. IDLE (встроенная)
+   • Идет вместе с Python
+   • Простая и легкая
+   • Подходит для первых шагов
+
+4. Jupyter Notebook
+   • Идеален для анализа данных
+   • Интерактивные ячейки
+   • Визуализация данных
+
+Установка PyCharm:
+1. Скачайте с jetbrains.com/pycharm
+2. Выберите Community Edition
+3. Установите, оставив все настройки по умолчанию
+4. Создайте новый проект`
+                        },
+                        {
+                            title: "Первая программа",
+                            content: `Традиционно первой программой является "Hello, World!". Создайте файл hello.py:
+
+print("Hello, World!")  # Вывод текста
+
+Запуск программы:
+• В PyCharm: нажмите зеленую стрелку
+• В терминале: python hello.py
+• В IDLE: File → Open → Run
+
+Разбор программы:
+print() - встроенная функция для вывода текста
+"Hello, World!" - строка в кавычках
+# - символ комментария (Python игнорирует текст после #)`
+                        },
+                        {
+                            title: "Синтаксис и особенности",
+                            content: `Ключевые особенности синтаксиса Python:
+
+1. Отступы вместо скобок
+if True:
+    print("Этот код с отступом")
+print("Этот код вне блока")
+
+2. Отсутствие точек с запятой в конце строк
+print("Привет")  # Точка с запятой не нужна
+
+3. Динамическая типизация
+x = 5        # x - целое число
+x = "текст"  # теперь x - строка
+
+4. Комментарии
+# Это однострочный комментарий
+
+"""
+Это многострочный
+комментарий
+"""
+
+5. Регистрозависимость
+name = "Анна"
+Name = "Петр"  # это разные переменные
+
+6. Длина строки (PEP 8 рекомендует до 79 символов)`
+                        }
+                    ],
+                    code: `# Примеры кода для урока 1
+
+# 1. Простой вывод
+print("Hello, World!")
+
+# 2. Вывод нескольких значений
+print("Python", "это", "круто!")
+
+# 3. Вывод с разделителем и окончанием
+print("a", "b", "c", sep=", ", end="!")
+# Результат: a, b, c!
+
+# 4. Экранирование символов
+print("Он сказал: \\"Привет\\"")
+print("Первая строка\\nВторая строка")
+
+# 5. Многострочный текст
+print("""
+Это
+многострочный
+текст
+""")
+
+# 6. Ввод данных
+name = input("Как вас зовут? ")
+print(f"Приятно познакомиться, {name}!")
+
+# 7. Простая арифметика
+print(2 + 2)
+print(10 - 3)
+print(4 * 5)
+print(15 / 3)
+
+# 8. Проверка типа данных
+print(type(42))        # <class 'int'>
+print(type(3.14))      # <class 'float'>
+print(type("текст"))   # <class 'str'>
+print(type(True))      # <class 'bool'>`,
+                    keywords: ["Python", "интерпретатор", "print()", "input()", "синтаксис", "отступы", "комментарии"]
+                },
+                practice: [
+                    {
+                        title: "Приветствие мира",
+                        difficulty: "easy",
+                        desc: "Напишите программу, которая выводит на экран фразу 'Привет, мир!'",
+                        example: "Вывод: Привет, мир!",
+                        hint: "Используйте функцию print()",
+                        solution: 'print("Привет, мир!")'
+                    },
+                    {
+                        title: "Личная информация",
+                        difficulty: "easy",
+                        desc: "Выведите на экран ваше имя, возраст и город в формате: 'Меня зовут [имя], мне [возраст] лет, я из [город]'",
+                        example: "Вывод: Меня зовут Анна, мне 25 лет, я из Москва",
+                        hint: "Используйте print с несколькими аргументами или f-строки",
+                        solution: 'name = "Анна"\nage = 25\ncity = "Москва"\nprint(f"Меня зовут {name}, мне {age} лет, я из {city}")'
+                    },
+                    {
+                        title: "Калькулятор",
+                        difficulty: "medium",
+                        desc: "Напишите программу, которая запрашивает два числа и выводит их сумму, разность, произведение и частное",
+                        example: "Ввод: 10, 3\nВывод:\nСумма: 13\nРазность: 7\nПроизведение: 30\nЧастное: 3.333",
+                        hint: "Используйте input() для ввода и преобразуйте в int или float",
+                        solution: 'a = float(input("Введите первое число: "))\nb = float(input("Введите второе число: "))\nprint(f"Сумма: {a + b}")\nprint(f"Разность: {a - b}")\nprint(f"Произведение: {a * b}")\nprint(f"Частное: {a / b}")'
+                    }
+                ]
+            },
+            2: {
+                title: "Переменные и типы данных",
+                duration: "60 мин",
+                level: "Начинающий",
+                theory: {
+                    intro: "Переменные - это именованные области памяти для хранения данных. В Python не нужно объявлять тип переменной заранее - типизация динамическая.",
+                    topics: [
+                        {
+                            title: "Что такое переменные?",
+                            content: `Переменная - это имя, которое ссылается на значение в памяти. Представьте коробку с наклейкой - вы можете положить туда что угодно и подписать.
+
+Создание переменной:
+имя = значение
+
+Примеры:
+name = "Анна"        # строка
+age = 25             # целое число
+height = 1.75        # дробное число
+is_student = True    # логическое значение
+
+Правила именования переменных:
+• Можно использовать буквы (a-z, A-Z), цифры и _
+• Нельзя начинать с цифры
+• Регистр имеет значение: name ≠ Name ≠ NAME
+• Нельзя использовать ключевые слова (if, for, while, class и т.д.)
+• Имя должно быть осмысленным (лучше student_age, чем a)
+
+Ключевые слова Python (нельзя использовать как имена):
+and, as, assert, async, await, break, class, continue, def, del, elif, else, except, False, finally, for, from, global, if, import, in, is, lambda, None, nonlocal, not, or, pass, raise, return, True, try, while, with, yield`
+                        },
+                        {
+                            title: "Числовые типы (int и float)",
+                            content: `int (integer) - целые числа:
+age = 25
+temperature = -10
+population = 7_000_000_000  # можно использовать _ для читаемости
+
+float (floating point) - числа с плавающей точкой:
+pi = 3.14159
+price = 99.99
+scientific = 1.5e-10  # 0.00000000015
+
+Арифметические операции:
++  сложение
+-  вычитание
+*  умножение
+/  деление (всегда возвращает float)
+// целочисленное деление (остаток отбрасывается)
+%  остаток от деления
+** возведение в степень
+
+Примеры:
+print(10 + 3)    # 13
+print(10 - 3)    # 7
+print(10 * 3)    # 30
+print(10 / 3)    # 3.3333...
+print(10 // 3)   # 3
+print(10 % 3)    # 1
+print(2 ** 3)    # 8
+
+Приоритет операций (как в математике):
+1. Скобки ()
+2. Возведение в степень **
+3. Умножение, деление *, /, //, %
+4. Сложение, вычитание +, -`
+                        },
+                        {
+                            title: "Строки (str)",
+                            content: `Строки - это последовательности символов. Можно создавать разными способами:
+
+# Одинарные кавычки
+name = 'Анна'
+
+# Двойные кавычки
+message = "Привет, мир!"
+
+# Тройные кавычки (многострочные)
+text = """Это
+многострочная
+строка"""
+
+# Сырые строки (игнорируют экранирование)
+path = r"C:\\Users\\Name"
+
+Операции со строками:
+# Конкатенация (сложение)
+first = "Hello"
+second = "World"
+print(first + " " + second)  # Hello World
+
+# Повторение
+print("Ha" * 3)  # HaHaHa
+
+# Длина строки
+text = "Python"
+print(len(text))  # 5
+
+# Доступ по индексу
+print(text[0])   # P (первый символ)
+print(text[-1])  # n (последний символ)
+
+# Срезы
+print(text[0:3])   # Pyt (с 0 по 2)
+print(text[2:])    # thon (с 2 до конца)
+print(text[:3])    # Pyt (с начала до 2)
+print(text[::-1])  # nohtyP (разворот)
+
+Методы строк:
+text = "  Python Programming  "
+print(text.upper())        # PYTHON PROGRAMMING
+print(text.lower())        # python programming
+print(text.strip())        # удаляет пробелы
+print(text.replace("P", "J"))  # заменяет
+print(text.split())        # разделяет на слова
+
+Форматирование строк:
+name = "Анна"
+age = 25
+
+# f-строки (рекомендуется)
+print(f"Меня зовут {name}, мне {age} лет")
+
+# format
+print("Меня зовут {}, мне {} лет".format(name, age))
+
+# % форматирование (старый стиль)
+print("Меня зовут %s, мне %d лет" % (name, age))`
+                        },
+                        {
+                            title: "Логический тип (bool)",
+                            content: `bool (boolean) - логический тип, принимает значения True или False.
+
+Используется в условных выражениях:
+is_raining = True
+has_umbrella = False
+
+Операторы сравнения (возвращают bool):
+==  равно
+!=  не равно
+>   больше
+<   меньше
+>=  больше или равно
+<=  меньше или равно
+
+Примеры:
+print(5 == 5)    # True
+print(5 != 3)    # True
+print(5 > 3)     # True
+print(5 < 3)     # False
+print(5 >= 5)    # True
+print(5 <= 4)    # False
+
+Логические операторы:
+and - И (True только если оба True)
+or  - ИЛИ (True если хотя бы один True)
+not - НЕ (инвертирует)
+
+Примеры:
+x = 5
+print(x > 0 and x < 10)      # True
+print(x < 0 or x > 10)       # False
+print(not (x > 10))          # True
+
+Преобразование в bool:
+bool(0)       # False
+bool(1)       # True
+bool("")      # False
+bool("text")  # True
+bool([])      # False
+bool([1,2])   # True`
+                        },
+                        {
+                            title: "Преобразование типов",
+                            content: `Python позволяет преобразовывать значения из одного типа в другой:
+
+int() - преобразование в целое число
+float() - преобразование в число с плавающей точкой
+str() - преобразование в строку
+bool() - преобразование в логическое значение
+
+Примеры:
+# Из строки в число
+number_str = "123"
+number_int = int(number_str)
+print(number_int + 1)  # 124
+
+# Из числа в строку
+age = 25
+message = "Мне " + str(age) + " лет"
+print(message)
+
+# Из float в int (отбрасывает дробную часть)
+print(int(3.14))    # 3
+print(int(3.99))    # 3
+
+# Из int в float
+print(float(5))     # 5.0
+
+Важно! Не все преобразования возможны:
+int("abc")     # Ошибка!
+int("123.45")  # Ошибка! (сначала нужно в float)
+float("123.45") # 123.45
+
+Проверка типа:
+x = 5
+print(type(x))          # <class 'int'>
+print(isinstance(x, int))  # True`
+                        },
+                        {
+                            title: "NoneType",
+                            content: `None - специальное значение, означающее "ничего" или "отсутствие значения".
+
+Используется для:
+• Инициализации переменных
+• Возврата из функций, где нет return
+• Обозначения отсутствия значения
+
+Примеры:
+result = None
+print(result)  # None
+
+def func():
+    pass
+
+print(func())  # None
+
+Проверка на None:
+value = None
+if value is None:
+    print("Значения нет")
+
+if value is not None:
+    print("Значение есть")`
+                        }
+                    ],
+                    code: `# Полный пример работы с переменными и типами
+
+# 1. Различные типы переменных
+name = "Анна Петрова"
+age = 25
+height = 1.72
+weight = 65.5
+is_student = True
+address = None
+
+# 2. Вывод информации о переменных
+print(f"Имя: {name}, тип: {type(name)}")
+print(f"Возраст: {age}, тип: {type(age)}")
+print(f"Рост: {height}, тип: {type(height)}")
+print(f"Студент: {is_student}, тип: {type(is_student)}")
+print(f"Адрес: {address}, тип: {type(address)}")
+
+# 3. Арифметические операции
+a = 10
+b = 3
+
+print(f"a + b = {a + b}")      # 13
+print(f"a - b = {a - b}")      # 7
+print(f"a * b = {a * b}")      # 30
+print(f"a / b = {a / b}")      # 3.333...
+print(f"a // b = {a // b}")    # 3
+print(f"a % b = {a % b}")      # 1
+print(f"a ** b = {a ** b}")    # 1000
+
+# 4. Работа со строками
+first_name = "Иван"
+last_name = "Петров"
+full_name = first_name + " " + last_name
+print(f"Полное имя: {full_name}")
+
+# Методы строк
+text = "  Python Programming  "
+print(f"Исходный: '{text}'")
+print(f"upper(): '{text.upper()}'")
+print(f"lower(): '{text.lower()}'")
+print(f"strip(): '{text.strip()}'")
+print(f"replace(): '{text.replace('P', 'J')}'")
+print(f"split(): {text.strip().split()}")
+
+# Срезы
+word = "Programming"
+print(f"Слово: {word}")
+print(f"Первые 4 символа: {word[:4]}")
+print(f"Последние 4 символа: {word[-4:]}")
+print(f"С 3 по 7: {word[2:7]}")
+print(f"Каждый второй: {word[::2]}")
+print(f"Развернуть: {word[::-1]}")
+
+# 5. Логические операции
+x = 5
+y = 10
+print(f"x = {x}, y = {y}")
+print(f"x == y: {x == y}")
+print(f"x != y: {x != y}")
+print(f"x > y: {x > y}")
+print(f"x < y: {x < y}")
+print(f"x > 0 and x < 10: {x > 0 and x < 10}")
+print(f"x < 0 or y > 5: {x < 0 or y > 5}")
+print(f"not (x > y): {not (x > y)}")
+
+# 6. Преобразование типов
+str_num = "123"
+int_num = int(str_num)
+float_num = float(str_num)
+print(f"'{str_num}' -> int: {int_num}, тип: {type(int_num)}")
+print(f"'{str_num}' -> float: {float_num}, тип: {type(float_num)}")
+
+num = 456
+str_num = str(num)
+print(f"{num} -> '{str_num}', тип: {type(str_num)}")
+
+pi = 3.14159
+approx = int(pi)
+print(f"int({pi}) = {approx}")
+
+# 7. Множественное присваивание
+x, y, z = 1, 2, 3
+print(f"x={x}, y={y}, z={z}")
+
+# Обмен значений
+a, b = 10, 20
+print(f"До: a={a}, b={b}")
+a, b = b, a
+print(f"После: a={a}, b={b}")
+
+# 8. Константы (по соглашению, заглавными буквами)
+PI = 3.14159
+MAX_SIZE = 100
+DEFAULT_NAME = "Гость"
+
+print(f"PI = {PI}")
+print(f"MAX_SIZE = {MAX_SIZE}")
+print(f"DEFAULT_NAME = {DEFAULT_NAME}")`,
+                    keywords: ["переменные", "типы данных", "int", "float", "str", "bool", "None", "преобразование типов", "арифметика", "строки", "срезы"]
+                },
+                practice: [
+                    {
+                        title: "Личная карточка",
+                        difficulty: "easy",
+                        desc: "Создайте переменные для хранения вашего имени, возраста, роста, семейного положения (True/False). Выведите всю информацию в читаемом формате.",
+                        example: "Имя: Анна\nВозраст: 25\nРост: 1.72\nВ браке: False",
+                        hint: "Используйте f-строки для форматирования",
+                        solution: `name = "Анна"
+age = 25
+height = 1.72
+married = False
+
+print(f"Имя: {name}")
+print(f"Возраст: {age}")
+print(f"Рост: {height}")
+print(f"В браке: {married}")`
+                    },
+                    {
+                        title: "Арифметический калькулятор",
+                        difficulty: "medium",
+                        desc: "Запросите у пользователя два числа и выполните все арифметические операции (+, -, *, /, //, %, **). Выведите результаты с пояснениями.",
+                        example: "Ввод: 10, 3\nВывод:\n10 + 3 = 13\n10 - 3 = 7\n10 * 3 = 30\n10 / 3 = 3.3333\n10 // 3 = 3\n10 % 3 = 1\n10 ** 3 = 1000",
+                        hint: "Преобразуйте ввод в float, но для целочисленных операций используйте int",
+                        solution: `a = float(input("Введите первое число: "))
+b = float(input("Введите второе число: "))
+
+print(f"{a} + {b} = {a + b}")
+print(f"{a} - {b} = {a - b}")
+print(f"{a} * {b} = {a * b}")
+print(f"{a} / {b} = {a / b}")
+print(f"{int(a)} // {int(b)} = {int(a) // int(b)}")
+print(f"{int(a)} % {int(b)} = {int(a) % int(b)}")
+print(f"{a} ** {b} = {a ** b}")`
+                    },
+                    {
+                        title: "Обработка строк",
+                        difficulty: "medium",
+                        desc: "Запросите у пользователя предложение. Выведите:\n• Длину строки\n• Строку в верхнем регистре\n• Строку в нижнем регистре\n• Количество слов (разделенных пробелами)\n• Развернутую строку",
+                        example: "Ввод: Hello World\nДлина: 11\nВерхний: HELLO WORLD\nНижний: hello world\nСлов: 2\nРазвернуто: dlroW olleH",
+                        hint: "Используйте методы строк и split()",
+                        solution: `text = input("Введите предложение: ")
+
+print(f"Длина строки: {len(text)}")
+print(f"Верхний регистр: {text.upper()}")
+print(f"Нижний регистр: {text.lower()}")
+print(f"Количество слов: {len(text.split())}")
+print(f"Развернутая строка: {text[::-1]}")`
+                    }
+                ]
+            },
+            3: {
+                title: "Условные операторы",
+                duration: "50 мин",
+                level: "Начинающий",
+                theory: {
+                    intro: "Условные операторы позволяют программе принимать решения и выполнять разные действия в зависимости от условий.",
+                    topics: [
+                        {
+                            title: "Оператор if",
+                            content: `if - самый простой условный оператор. Он проверяет условие и выполняет блок кода, если условие истинно.
+
+Синтаксис:
+if условие:
+    # код, который выполнится, если условие True
+    # обратите внимание на отступ (4 пробела)
+
+Примеры:
+age = 18
+if age >= 18:
+    print("Вы совершеннолетний")
+    print("Можно голосовать")
+
+# Если условие False, блок не выполняется
+temperature = -5
+if temperature < 0:
+    print("На улице мороз")
+    print("Оденьтесь теплее")
+
+Важно! После условия обязательно ставится двоеточие.`
+                        },
+                        {
+                            title: "Оператор if-else",
+                            content: `if-else позволяет выполнить один блок кода, если условие истинно, и другой блок, если ложно.
+
+Синтаксис:
+if условие:
+    # код, если True
+else:
+    # код, если False
+
+Примеры:
+# Проверка четности числа
+number = 7
+if number % 2 == 0:
+    print(f"{number} - четное число")
+else:
+    print(f"{number} - нечетное число")
+
+# Проверка возраста
+age = 16
+if age >= 18:
+    print("Доступ разрешен")
+else:
+    print("Доступ запрещен")
+
+# Проверка логина и пароля
+username = input("Логин: ")
+password = input("Пароль: ")
+
+if username == "admin" and password == "12345":
+    print("Добро пожаловать!")
+else:
+    print("Неверный логин или пароль")`
+                        },
+                        {
+                            title: "Оператор if-elif-else",
+                            content: `elif (сокращение от else if) позволяет проверить несколько условий.
+
+Синтаксис:
+if условие1:
+    # код для условия1
+elif условие2:
+    # код для условия2
+elif условие3:
+    # код для условия3
+else:
+    # код, если ни одно условие не подошло
+
+Важно! Проверка идет сверху вниз. Как только находится истинное условие, остальные пропускаются.
+
+Примеры:
+# Оценка знаний
+score = 85
+if score >= 90:
+    grade = "A"
+    print("Отлично!")
+elif score >= 80:
+    grade = "B"
+    print("Хорошо!")
+elif score >= 70:
+    grade = "C"
+    print("Удовлетворительно")
+elif score >= 60:
+    grade = "D"
+    print("Нужно подтянуть")
+else:
+    grade = "F"
+    print("Неудовлетворительно")
+
+print(f"Ваша оценка: {grade}")
+
+# Определение времени года
+month = 7
+if month in [12, 1, 2]:
+    season = "зима"
+elif month in [3, 4, 5]:
+    season = "весна"
+elif month in [6, 7, 8]:
+    season = "лето"
+elif month in [9, 10, 11]:
+    season = "осень"
+else:
+    season = "неверный месяц"
+
+print(f"Месяц {month} - это {season}")`
+                        },
+                        {
+                            title: "Логические операторы",
+                            content: `Для создания сложных условий используются логические операторы:
+
+and (И) - истинно, если оба условия истинны:
+age = 25
+has_license = True
+if age >= 18 and has_license:
+    print("Можно водить машину")
+
+or (ИЛИ) - истинно, если хотя бы одно условие истинно:
+day = "Saturday"
+if day == "Saturday" or day == "Sunday":
+    print("Выходной день!")
+
+not (НЕ) - инвертирует условие:
+is_raining = False
+if not is_raining:
+    print("Можно идти гулять")
+
+Комбинирование операторов:
+age = 17
+with_parents = True
+if (age >= 18 or with_parents) and not is_raining:
+    print("Можно идти в кино")
+
+Таблицы истинности:
+
+AND:
+True and True = True
+True and False = False
+False and True = False
+False and False = False
+
+OR:
+True or True = True
+True or False = True
+False or True = True
+False or False = False
+
+NOT:
+not True = False
+not False = True`
+                        },
+                        {
+                            title: "Вложенные условия",
+                            content: `Условные операторы могут быть вложены друг в друга.
+
+Синтаксис:
+if условие1:
+    if условие2:
+        # код
+    else:
+        # код
+else:
+    # код
+
+Примеры:
+# Сложная система доступа
+has_ticket = True
+age = 16
+with_adult = True
+
+if has_ticket:
+    print("Билет есть, проверяем возраст...")
+    if age >= 18:
+        print("Проходите")
+    elif with_adult:
+        print("Проходите с взрослым")
+    else:
+        print("Нужен взрослый")
+else:
+    print("Купите билет")
+
+# Калькулятор с проверками
+num1 = float(input("Введите первое число: "))
+operator = input("Введите оператор (+, -, *, /): ")
+num2 = float(input("Введите второе число: "))
+
+if operator == "+":
+    result = num1 + num2
+    print(f"{num1} + {num2} = {result}")
+elif operator == "-":
+    result = num1 - num2
+    print(f"{num1} - {num2} = {result}")
+elif operator == "*":
+    result = num1 * num2
+    print(f"{num1} * {num2} = {result}")
+elif operator == "/":
+    if num2 == 0:
+        print("Ошибка: деление на ноль!")
+    else:
+        result = num1 / num2
+        print(f"{num1} / {num2} = {result}")
+else:
+    print("Неизвестный оператор")`
+                        },
+                        {
+                            title: "Тернарный оператор",
+                            content: `Тернарный оператор позволяет записать простое условие в одну строку.
+
+Синтаксис:
+значение_если_True if условие else значение_если_False
+
+Примеры:
+age = 20
+status = "совершеннолетний" if age >= 18 else "несовершеннолетний"
+print(status)
+
+# Максимум из двух чисел
+a, b = 5, 10
+max_value = a if a > b else b
+print(f"Максимум: {max_value}")
+
+# Проверка четности
+number = 7
+parity = "четное" if number % 2 == 0 else "нечетное"
+print(f"{number} - {parity}")
+
+# Разрешено ли водить
+age = 17
+has_license = True
+can_drive = "можно" if age >= 18 and has_license else "нельзя"
+print(f"Водить {can_drive}")`
+                        }
+                    ],
+                    code: `# Полный пример условных операторов
+
+# 1. Простой if
+age = 18
+if age >= 18:
+    print("Вы совершеннолетний")
+    print("Можно голосовать")
+
+# 2. if-else
+number = 7
+if number % 2 == 0:
+    print(f"{number} - четное")
+else:
+    print(f"{number} - нечетное")
+
+# 3. if-elif-else (определение времени суток)
+hour = 14
+if 6 <= hour <= 11:
+    time_of_day = "утро"
+    activity = "просыпаемся и завтракаем"
+elif 12 <= hour <= 17:
+    time_of_day = "день"
+    activity = "работаем или учимся"
+elif 18 <= hour <= 23:
+    time_of_day = "вечер"
+    activity = "отдыхаем"
+else:
+    time_of_day = "ночь"
+    activity = "спим"
+
+print(f"Сейчас {time_of_day}, пора {activity}")
+
+# 4. Логические операторы
+has_ticket = True
+age = 16
+with_adult = True
+
+if has_ticket and (age >= 18 or with_adult):
+    print("Можно пройти на концерт")
+else:
+    print("Проход запрещен")
+
+# 5. Вложенные условия
+username = input("Логин: ")
+password = input("Пароль: ")
+
+if len(username) < 3:
+    print("Логин слишком короткий")
+elif len(username) > 20:
+    print("Логин слишком длинный")
+else:
+    if len(password) < 6:
+        print("Пароль слишком короткий")
+    elif len(password) > 30:
+        print("Пароль слишком длинный")
+    else:
+        if username == "admin" and password == "12345":
+            print("Добро пожаловать, администратор!")
+        elif username == "user" and password == "qwerty":
+            print("Добро пожаловать, пользователь!")
+        else:
+            print("Неверный логин или пароль")
+
+# 6. Тернарный оператор
+age = 20
+status = "совершеннолетний" if age >= 18 else "несовершеннолетний"
+print(status)
+
+# 7. Калькулятор с проверками
+print("\\n--- Калькулятор ---")
+num1 = float(input("Введите первое число: "))
+op = input("Введите оператор (+, -, *, /): ")
+num2 = float(input("Введите второе число: "))
+
+if op == "+":
+    result = num1 + num2
+elif op == "-":
+    result = num1 - num2
+elif op == "*":
+    result = num1 * num2
+elif op == "/":
+    if num2 == 0:
+        result = "Ошибка: деление на ноль!"
+    else:
+        result = num1 / num2
+else:
+    result = "Неизвестный оператор"
+
+print(f"Результат: {result}")
+
+# 8. Игра "Угадай число"
+import random
+
+secret = random.randint(1, 10)
+guess = int(input("Угадай число от 1 до 10: "))
+
+if guess == secret:
+    print("Поздравляю! Вы угадали!")
+elif guess < secret:
+    print("Загаданное число больше")
+else:
+    print("Загаданное число меньше")
+
+print(f"Было загадано: {secret}")`,
+                    keywords: ["if", "else", "elif", "условия", "логические операторы", "and", "or", "not", "вложенные условия", "тернарный оператор"]
+                },
+                practice: [
+                    {
+                        title: "Проверка возраста",
+                        difficulty: "easy",
+                        desc: "Напишите программу, которая запрашивает возраст и выводит:\n• 'Ребенок' (0-12 лет)\n• 'Подросток' (13-17 лет)\n• 'Взрослый' (18-59 лет)\n• 'Пенсионер' (60+)",
+                        example: "Ввод: 15 → Подросток\nВвод: 45 → Взрослый",
+                        hint: "Используйте if-elif-else",
+                        solution: `age = int(input("Сколько вам лет? "))
+
+if age <= 12:
+    print("Ребенок")
+elif age <= 17:
+    print("Подросток")
+elif age <= 59:
+    print("Взрослый")
+else:
+    print("Пенсионер")`
+                    },
+                    {
+                        title: "Калькулятор с защитой",
+                        difficulty: "medium",
+                        desc: "Напишите программу-калькулятор, которая:\n• Запрашивает два числа\n• Запрашивает операцию (+, -, *, /)\n• Проверяет деление на ноль\n• Проверяет корректность операции\n• Выводит результат или сообщение об ошибке",
+                        example: "Ввод: 10, 5, + → 15\nВвод: 10, 0, / → Ошибка: деление на ноль",
+                        hint: "Используйте вложенные условия",
+                        solution: `a = float(input("Первое число: "))
+b = float(input("Второе число: "))
+op = input("Операция (+, -, *, /): ")
+
+if op == "+":
+    print(f"{a} + {b} = {a + b}")
+elif op == "-":
+    print(f"{a} - {b} = {a - b}")
+elif op == "*":
+    print(f"{a} * {b} = {a * b}")
+elif op == "/":
+    if b == 0:
+        print("Ошибка: деление на ноль!")
+    else:
+        print(f"{a} / {b} = {a / b}")
+else:
+    print("Неизвестная операция")`
+                    },
+                    {
+                        title: "Определение треугольника",
+                        difficulty: "medium",
+                        desc: "Запросите три стороны треугольника. Определите:\n• Существует ли треугольник (сумма любых двух сторон больше третьей)\n• Если существует, то какой он: равносторонний, равнобедренный или разносторонний",
+                        example: "Ввод: 3, 4, 5 → Разносторонний\nВвод: 5, 5, 5 → Равносторонний\nВвод: 1, 1, 3 → Треугольник не существует",
+                        hint: "Проверьте условие существования треугольника",
+                        solution: `a = float(input("Сторона a: "))
+b = float(input("Сторона b: "))
+c = float(input("Сторона c: "))
+
+if a + b > c and a + c > b and b + c > a:
+    if a == b == c:
+        print("Равносторонний")
+    elif a == b or a == c or b == c:
+        print("Равнобедренный")
+    else:
+        print("Разносторонний")
+else:
+    print("Треугольник не существует")`
+                    },
+                    {
+                        title: "Игра Камень-Ножницы-Бумага",
+                        difficulty: "hard",
+                        desc: "Напишите игру 'Камень-ножницы-бумага' против компьютера.\n• Компьютер случайно выбирает один из трех вариантов\n• Игрок вводит свой выбор\n• Определите победителя\n• Учитывайте все комбинации",
+                        example: "Игрок: камень, Компьютер: ножницы → Вы выиграли!",
+                        hint: "Используйте random.choice() и логические операторы",
+                        solution: `import random
+
+choices = ["камень", "ножницы", "бумага"]
+computer = random.choice(choices)
+player = input("Ваш выбор (камень/ножницы/бумага): ").lower()
+
+print(f"Компьютер выбрал: {computer}")
+
+if player not in choices:
+    print("Неверный выбор!")
+else:
+    if player == computer:
+        print("Ничья!")
+    elif (player == "камень" and computer == "ножницы") or \\
+         (player == "ножницы" and computer == "бумага") or \\
+         (player == "бумага" and computer == "камень"):
+        print("Вы выиграли!")
+    else:
+        print("Вы проиграли!")`
+                    },
+                    {
+                        title: "Високосный год",
+                        difficulty: "hard",
+                        desc: "Определите, является ли год високосным. Правила:\n• Год високосный, если делится на 4\n• Но если делится на 100, то не високосный\n• Но если делится на 400, то високосный",
+                        example: "2000 → Високосный\n2100 → Не високосный\n2024 → Високосный\n2023 → Не високосный",
+                        hint: "Используйте вложенные условия или сложное логическое выражение",
+                        solution: `year = int(input("Введите год: "))
+
+if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+    print(f"{year} - високосный год")
+else:
+    print(f"{year} - не високосный год")
+
+# Альтернативное решение с вложенными условиями:
+if year % 400 == 0:
+    print(f"{year} - високосный год")
+elif year % 100 == 0:
+    print(f"{year} - не високосный год")
+elif year % 4 == 0:
+    print(f"{year} - високосный год")
+else:
+    print(f"{year} - не високосный год")`
+                    }
+                ]
+            },
+            4: {
+                title: "Цикл while",
+                duration: "45 мин",
+                level: "Начинающий",
+                theory: {
+                    intro: "Цикл while выполняет блок кода, пока условие истинно. Это основной инструмент для повторения действий, когда количество итераций неизвестно заранее.",
+                    topics: [
+                        {
+                            title: "Основы while",
+                            content: `while условие:
+    # тело цикла
+    # важно изменять переменные в условии
+
+Пример простого счетчика:
+i = 1
+while i <= 5:
+    print(i)
+    i += 1  # увеличиваем счетчик
+
+Если забыть изменить переменную, цикл станет бесконечным!`
+                        },
+                        {
+                            title: "break и continue",
+                            content: `break - немедленно прерывает цикл
+continue - переходит к следующей итерации
+
+Пример с break:
+i = 1
+while True:
+    print(i)
+    i += 1
+    if i > 5:
+        break  # выход из бесконечного цикла
+
+Пример с continue:
+i = 0
+while i < 10:
+    i += 1
+    if i % 2 == 0:
+        continue  # пропускаем четные числа
+    print(i)  # выводятся только нечетные`
+                        },
+                        {
+                            title: "else в цикле while",
+                            content: `else выполняется, если цикл завершился нормально (без break)
+
+Пример:
+i = 1
+while i <= 3:
+    print(i)
+    i += 1
+else:
+    print("Цикл завершен")
+
+# Поиск числа
+numbers = [1, 3, 5, 7, 9]
+search = 6
+i = 0
+while i < len(numbers):
+    if numbers[i] == search:
+        print("Найдено!")
+        break
+    i += 1
+else:
+    print("Не найдено")`
+                        },
+                        {
+                            title: "Практические примеры",
+                            content: `# Сумма чисел до 100
+total = 0
+i = 1
+while i <= 100:
+    total += i
+    i += 1
+print(f"Сумма: {total}")
+
+# Ввод чисел до 0
+numbers = []
+while True:
+    num = int(input("Введите число (0 для выхода): "))
+    if num == 0:
+        break
+    numbers.append(num)
+print(f"Введено чисел: {len(numbers)}")
+
+# Факториал
+n = int(input("Введите n: "))
+result = 1
+i = 1
+while i <= n:
+    result *= i
+    i += 1
+print(f"{n}! = {result}")`
+                        },
+                        {
+                            title: "Бесконечные циклы",
+                            content: `Бесконечный цикл - это цикл, условие которого всегда истинно:
+while True:
+    print("Бесконечность")
+
+Используется, когда выход организован через break:
+while True:
+    command = input("Введите команду: ")
+    if command == "exit":
+        break
+    print(f"Выполняю: {command}")
+
+Осторожно! Случайный бесконечный цикл может повесить программу:
+i = 1
+while i > 0:  # условие всегда True, если i не уменьшается
+    print(i)
+    i += 1  # i растет, условие остается True`
+                        }
+                    ],
+                    code: `# Примеры циклов while
+
+# 1. Счет от 1 до 10
+print("Счет от 1 до 10:")
+i = 1
+while i <= 10:
+    print(i, end=" ")
+    i += 1
+print("\\n")
+
+# 2. Сумма чисел
+print("Сумма чисел от 1 до 100:")
+total = 0
+i = 1
+while i <= 100:
+    total += i
+    i += 1
+print(f"Сумма = {total}\\n")
+
+# 3. Таблица умножения
+print("Таблица умножения на 5:")
+i = 1
+while i <= 10:
+    print(f"5 x {i} = {5 * i}")
+    i += 1
+print()
+
+# 4. Ввод пароля
+password = ""
+while password != "secret":
+    password = input("Введите пароль: ")
+print("Доступ разрешен!\\n")
+
+# 5. Обработка списка
+fruits = ["яблоко", "банан", "апельсин", "груша"]
+print("Список фруктов:")
+i = 0
+while i < len(fruits):
+    print(f"{i + 1}. {fruits[i]}")
+    i += 1
+print()
+
+# 6. Поиск минимального числа
+print("Поиск минимального числа (0 для выхода):")
+min_num = None
+while True:
+    num = int(input("Введите число: "))
+    if num == 0:
+        break
+    if min_num is None or num < min_num:
+        min_num = num
+print(f"Минимальное число: {min_num}\\n")
+
+# 7. Числа Фибоначчи
+print("Первые 10 чисел Фибоначчи:")
+a, b = 0, 1
+count = 0
+while count < 10:
+    print(a, end=" ")
+    a, b = b, a + b
+    count += 1
+print("\\n")
+
+# 8. Проверка простого числа
+num = int(input("Введите число для проверки: "))
+is_prime = True
+i = 2
+while i < num:
+    if num % i == 0:
+        is_prime = False
+        break
+    i += 1
+print(f"{num} - {'простое' if is_prime else 'составное'}")`,
+                    keywords: ["while", "цикл", "break", "continue", "else", "бесконечный цикл", "итерация"]
+                },
+                practice: [
+                    {
+                        title: "Счетчик",
+                        difficulty: "easy",
+                        desc: "Выведите все числа от 1 до 20, используя цикл while",
+                        example: "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20",
+                        hint: "Создайте переменную-счетчик и увеличивайте её",
+                        solution: `i = 1
+while i <= 20:
+    print(i, end=" ")
+    i += 1`
+                    },
+                    {
+                        title: "Сумма цифр числа",
+                        difficulty: "medium",
+                        desc: "Найдите сумму цифр введенного числа (например, 123 → 1+2+3=6)",
+                        example: "Ввод: 12345 → Сумма: 15",
+                        hint: "Используйте % 10 для получения последней цифры и // 10 для отбрасывания",
+                        solution: `n = int(input("Введите число: "))
+sum_digits = 0
+while n > 0:
+    sum_digits += n % 10
+    n //= 10
+print(f"Сумма цифр: {sum_digits}")`
+                    },
+                    {
+                        title: "Угадай число",
+                        difficulty: "medium",
+                        desc: "Компьютер загадывает число от 1 до 100, пользователь угадывает. После каждой попытки выводить 'больше' или 'меньше'. Считать количество попыток.",
+                        example: "Загадано 42\nПопытка 1: 50 → меньше\nПопытка 2: 30 → больше\nПопытка 3: 42 → Угадал за 3 попытки!",
+                        hint: "Используйте random.randint() для загадывания",
+                        solution: `import random
+secret = random.randint(1, 100)
+attempts = 0
+while True:
+    guess = int(input("Ваше предположение: "))
+    attempts += 1
+    if guess == secret:
+        print(f"Угадал за {attempts} попыток!")
+        break
+    elif guess < secret:
+        print("Загаданное число больше")
+    else:
+        print("Загаданное число меньше")`
+                    },
+                    {
+                        title: "Обратный порядок",
+                        difficulty: "hard",
+                        desc: "Выведите все числа от введенного пользователем до 1 в обратном порядке",
+                        example: "Ввод: 10 → 10 9 8 7 6 5 4 3 2 1",
+                        hint: "Используйте while с уменьшением счетчика",
+                        solution: `n = int(input("Введите число: "))
+i = n
+while i >= 1:
+    print(i, end=" ")
+    i -= 1`
+                    }
+                ]
+            },
+            5: {
+                title: "Цикл for",
+                duration: "45 мин",
+                level: "Начинающий",
+                theory: {
+                    intro: "Цикл for используется для перебора последовательностей (списков, строк, диапазонов). Это самый удобный способ обработать каждый элемент коллекции.",
+                    topics: [
+                        {
+                            title: "Основы for",
+                            content: `Синтаксис цикла for:
+for переменная in последовательность:
+    # тело цикла
+
+Примеры:
+# Перебор строки
+for char in "Python":
+    print(char)
+
+# Перебор списка
+fruits = ["яблоко", "банан", "груша"]
+for fruit in fruits:
+    print(fruit)
+
+# Перебор кортежа
+for num in (1, 2, 3):
+    print(num)`
+                        },
+                        {
+                            title: "Функция range()",
+                            content: `range(stop) - числа от 0 до stop-1
+range(start, stop) - числа от start до stop-1
+range(start, stop, step) - числа с шагом step
+
+Примеры:
+for i in range(5):
+    print(i)  # 0 1 2 3 4
+
+for i in range(2, 8):
+    print(i)  # 2 3 4 5 6 7
+
+for i in range(1, 10, 2):
+    print(i)  # 1 3 5 7 9
+
+for i in range(10, 0, -1):
+    print(i)  # 10 9 8 ... 1`
+                        },
+                        {
+                            title: "Перебор коллекций",
+                            content: `# Перебор с индексами
+fruits = ["яблоко", "банан", "груша"]
+for i in range(len(fruits)):
+    print(f"{i}: {fruits[i]}")
+
+# enumerate - индексы автоматически
+for i, fruit in enumerate(fruits):
+    print(f"{i}: {fruit}")
+
+# Перебор словаря
+person = {"name": "Анна", "age": 25, "city": "Москва"}
+for key in person:
+    print(f"{key}: {person[key]}")
+
+for key, value in person.items():
+    print(f"{key}: {value}`
+                        },
+                        {
+                            title: "Вложенные циклы",
+                            content: `# Таблица умножения
+for i in range(1, 10):
+    for j in range(1, 10):
+        print(f"{i}*{j}={i*j}", end="\\t")
+    print()  # новая строка
+
+# Рисуем прямоугольник
+for i in range(5):
+    for j in range(10):
+        print("*", end="")
+    print()`
+                        },
+                        {
+                            title: "break, continue, else",
+                            content: `# break - прерывание цикла
+for i in range(10):
+    if i == 5:
+        break
+    print(i)  # 0 1 2 3 4
+
+# continue - переход к следующей итерации
+for i in range(10):
+    if i % 2 == 0:
+        continue
+    print(i)  # 1 3 5 7 9
+
+# else - выполняется, если цикл завершился без break
+for i in range(5):
+    print(i)
+else:
+    print("Цикл завершен нормально")
+
+for i in range(5):
+    if i == 3:
+        break
+    print(i)
+else:
+    print("Это не выполнится")`
+                        }
+                    ],
+                    code: `# Примеры циклов for
+
+# 1. Вывод чисел
+print("Числа от 0 до 9:")
+for i in range(10):
+    print(i, end=" ")
+print("\\n")
+
+# 2. Четные числа
+print("Четные числа от 2 до 10:")
+for i in range(2, 11, 2):
+    print(i, end=" ")
+print("\\n")
+
+# 3. Сумма чисел
+total = 0
+for i in range(1, 101):
+    total += i
+print(f"Сумма от 1 до 100: {total}\\n")
+
+# 4. Перебор строки
+word = "Python"
+print(f"Буквы в слове {word}:")
+for char in word:
+    print(char, end=" ")
+print("\\n")
+
+# 5. Таблица умножения
+print("Таблица умножения:")
+for i in range(1, 10):
+    for j in range(1, 10):
+        print(f"{i}*{j}={i*j}", end="\\t")
+    print()
+print()
+
+# 6. Работа со списком
+fruits = ["яблоко", "банан", "апельсин", "груша"]
+print("Список фруктов:")
+for i, fruit in enumerate(fruits):
+    print(f"{i+1}. {fruit}")
+print()
+
+# 7. Поиск элемента
+numbers = [3, 7, 1, 9, 4, 2, 8]
+search = 9
+found = False
+for num in numbers:
+    if num == search:
+        found = True
+        break
+print(f"Число {search} {'найдено' if found else 'не найдено'}\\n")
+
+# 8. Создание нового списка
+numbers = [1, 2, 3, 4, 5]
+squares = []
+for n in numbers:
+    squares.append(n ** 2)
+print(f"Квадраты: {squares}\\n")
+
+# 9. Словарь из списков
+names = ["Анна", "Петр", "Мария"]
+ages = [25, 30, 28]
+people = {}
+for i in range(len(names)):
+    people[names[i]] = ages[i]
+print(f"Люди: {people}\\n")
+
+# 10. Рисование фигур
+print("Прямоугольник 5x10:")
+for i in range(5):
+    for j in range(10):
+        print("*", end="")
+    print()
+print()
+
+print("Треугольник:")
+for i in range(1, 6):
+    print("*" * i)`,
+                    keywords: ["for", "range", "enumerate", "break", "continue", "else", "вложенные циклы", "итерация"]
+                },
+                practice: [
+                    {
+                        title: "Таблица умножения",
+                        difficulty: "easy",
+                        desc: "Выведите таблицу умножения для числа, введенного пользователем (от 1 до 10)",
+                        example: "Ввод: 7\n7 x 1 = 7\n7 x 2 = 14\n...\n7 x 10 = 70",
+                        hint: "Используйте for i in range(1, 11)",
+                        solution: `n = int(input("Введите число: "))
+for i in range(1, 11):
+    print(f"{n} x {i} = {n * i}")`
+                    },
+                    {
+                        title: "Сумма и произведение",
+                        difficulty: "medium",
+                        desc: "Для чисел от 1 до N (N вводит пользователь) найдите сумму и произведение",
+                        example: "Ввод: 5\nСумма: 15\nПроизведение: 120",
+                        hint: "Инициализируйте sum=0, prod=1",
+                        solution: `n = int(input("Введите N: "))
+total = 0
+product = 1
+for i in range(1, n + 1):
+    total += i
+    product *= i
+print(f"Сумма: {total}")
+print(f"Произведение: {product}")`
+                    },
+                    {
+                        title: "Подсчет гласных",
+                        difficulty: "medium",
+                        desc: "Подсчитайте количество гласных букв в введенной строке (гласные: а, е, ё, и, о, у, ы, э, ю, я)",
+                        example: "Ввод: Привет мир\nГласных: 3",
+                        hint: "Используйте in для проверки",
+                        solution: `text = input("Введите строку: ").lower()
+vowels = "аеёиоуыэюя"
+count = 0
+for char in text:
+    if char in vowels:
+        count += 1
+print(f"Гласных: {count}")`
+                    },
+                    {
+                        title: "Числа Фибоначчи",
+                        difficulty: "hard",
+                        desc: "Выведите первые N чисел Фибоначчи (каждое следующее равно сумме двух предыдущих: 0, 1, 1, 2, 3, 5, 8, ...)",
+                        example: "Ввод: 10\n0 1 1 2 3 5 8 13 21 34",
+                        hint: "Начните с a, b = 0, 1",
+                        solution: `n = int(input("Сколько чисел Фибоначчи вывести? "))
+a, b = 0, 1
+for i in range(n):
+    print(a, end=" ")
+    a, b = b, a + b`
+                    }
+                ]
+            },
+            6: {
+                title: "Списки",
+                duration: "50 мин",
+                level: "Начинающий",
+                theory: {
+                    intro: "Список (list) - упорядоченная изменяемая коллекция элементов. Списки позволяют хранить множество значений и эффективно работать с ними.",
+                    topics: [
+                        {
+                            title: "Создание списков",
+                            content: `# Пустой список
+empty = []
+empty2 = list()
+
+# Список с элементами
+numbers = [1, 2, 3, 4, 5]
+fruits = ["яблоко", "банан", "апельсин"]
+mixed = [1, "привет", 3.14, True]
+
+# Из строки в список
+word = list("Python")  # ['P', 'y', 't', 'h', 'o', 'n']
+
+# range в список
+nums = list(range(10))  # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# Генератор списка
+squares = [x**2 for x in range(10)]  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]`
+                        },
+                        {
+                            title: "Индексация и срезы",
+                            content: `numbers = [10, 20, 30, 40, 50]
+
+# Доступ по индексу (с 0)
+print(numbers[0])   # 10
+print(numbers[2])   # 30
+print(numbers[-1])  # 50 (последний)
+print(numbers[-2])  # 40 (предпоследний)
+
+# Срезы [start:stop:step]
+print(numbers[1:4])     # [20, 30, 40]
+print(numbers[:3])      # [10, 20, 30]
+print(numbers[2:])      # [30, 40, 50]
+print(numbers[::2])     # [10, 30, 50]
+print(numbers[::-1])    # [50, 40, 30, 20, 10]
+
+# Изменение элементов
+numbers[0] = 100
+print(numbers)  # [100, 20, 30, 40, 50]`
+                        },
+                        {
+                            title: "Методы списков",
+                            content: `fruits = ["яблоко", "банан"]
+
+# Добавление
+fruits.append("апельсин")        # в конец
+fruits.insert(1, "груша")        # по индексу
+fruits.extend(["киви", "манго"])  # несколько
+
+# Удаление
+fruits.remove("банан")            # по значению
+popped = fruits.pop()             # последний
+popped = fruits.pop(1)            # по индексу
+fruits.clear()                    # очистить
+
+# Поиск
+index = fruits.index("яблоко")    # индекс элемента
+count = fruits.count("яблоко")    # количество
+is_present = "яблоко" in fruits   # проверка наличия
+
+# Сортировка
+numbers = [3, 1, 4, 1, 5, 9, 2]
+numbers.sort()                    # сортировка
+numbers.sort(reverse=True)        # по убыванию
+sorted_numbers = sorted(numbers)  # новый отсортированный
+
+# Другие методы
+fruits.reverse()                  # разворот
+copy_fruits = fruits.copy()       # копия
+length = len(fruits)              # длина
+min_val = min(numbers)            # минимум
+max_val = max(numbers)            # максимум
+sum_val = sum(numbers)            # сумма`
+                        },
+                        {
+                            title: "Операции со списками",
+                            content: `# Конкатенация
+list1 = [1, 2, 3]
+list2 = [4, 5, 6]
+combined = list1 + list2  # [1, 2, 3, 4, 5, 6]
+
+# Повторение
+repeated = [0] * 5  # [0, 0, 0, 0, 0]
+
+# Проверка вхождения
+print(3 in [1, 2, 3])  # True
+print(5 in [1, 2, 3])  # False
+
+# Сравнение списков
+print([1, 2] == [1, 2])  # True
+print([1, 2] == [2, 1])  # False`
+                        },
+                        {
+                            title: "Генераторы списков",
+                            content: `# Квадраты чисел
+squares = [x**2 for x in range(10)]
+# [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# Четные числа
+evens = [x for x in range(20) if x % 2 == 0]
+
+# Преобразование строк
+words = ["hello", "world", "python"]
+upper_words = [word.upper() for word in words]
+
+# Вложенные циклы
+pairs = [(x, y) for x in range(3) for y in range(3)]
+
+# С условием
+numbers = [x if x % 2 == 0 else -x for x in range(10)]`
+                        },
+                        {
+                            title: "Многомерные списки",
+                            content: `# Матрица 3x3
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+print(matrix[0][0])  # 1
+print(matrix[1][2])  # 6
+
+# Обход матрицы
+for row in matrix:
+    for elem in row:
+        print(elem, end=" ")
+    print()
+
+# Создание матрицы
+size = 3
+matrix = [[0] * size for _ in range(size)]
+
+# Транспонирование
+transposed = [[row[i] for row in matrix] for i in range(len(matrix[0]))]`
+                        }
+                    ],
+                    code: `# Примеры работы со списками
+
+# 1. Создание списков
+print("Создание списков:")
+numbers = [1, 2, 3, 4, 5]
+fruits = ["яблоко", "банан", "апельсин"]
+mixed = [1, "два", 3.0, True]
+print(f"Числа: {numbers}")
+print(f"Фрукты: {fruits}")
+print(f"Смешанный: {mixed}\\n")
+
+# 2. Индексация
+print("Индексация:")
+print(f"Первый элемент: {numbers[0]}")
+print(f"Последний элемент: {numbers[-1]}")
+print(f"Второй с конца: {numbers[-2]}\\n")
+
+# 3. Срезы
+print("Срезы:")
+print(f"numbers[1:4] = {numbers[1:4]}")
+print(f"numbers[:3] = {numbers[:3]}")
+print(f"numbers[2:] = {numbers[2:]}")
+print(f"numbers[::2] = {numbers[::2]}")
+print(f"numbers[::-1] = {numbers[::-1]}\\n")
+
+# 4. Методы списков
+print("Методы списков:")
+fruits.append("груша")
+print(f"После append: {fruits}")
+fruits.insert(1, "киви")
+print(f"После insert: {fruits}")
+fruits.remove("банан")
+print(f"После remove: {fruits}")
+popped = fruits.pop()
+print(f"После pop: {fruits}, удален: {popped}\\n")
+
+# 5. Поиск и сортировка
+numbers = [3, 1, 4, 1, 5, 9, 2]
+print(f"Исходный: {numbers}")
+numbers.sort()
+print(f"После sort: {numbers}")
+numbers.sort(reverse=True)
+print(f"По убыванию: {numbers}")
+print(f"Индекс числа 4: {numbers.index(4)}")
+print(f"Количество 1: {numbers.count(1)}\\n")
+
+# 6. Генераторы списков
+squares = [x**2 for x in range(10)]
+evens = [x for x in range(20) if x % 2 == 0]
+print(f"Квадраты: {squares}")
+print(f"Четные: {evens}\\n")
+
+# 7. Матрицы
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+print("Матрица:")
+for row in matrix:
+    print(row)
+print(f"Элемент [1][2]: {matrix[1][2]}\\n")
+
+# 8. Операции со списками
+list1 = [1, 2, 3]
+list2 = [4, 5, 6]
+combined = list1 + list2
+repeated = [0] * 5
+print(f"Конкатенация: {combined}")
+print(f"Повторение: {repeated}")
+print(f"3 в list1: {3 in list1}")
+print(f"Длина combined: {len(combined)}")
+print(f"Сумма combined: {sum(combined)}")
+print(f"Максимум: {max(combined)}")
+print(f"Минимум: {min(combined)}\\n")
+
+# 9. Копирование списков
+original = [1, 2, 3]
+copy1 = original.copy()
+copy2 = original[:]
+copy3 = list(original)
+original[0] = 100
+print(f"Оригинал: {original}")
+print(f"Копия 1: {copy1}")
+print(f"Копия 2: {copy2}")
+print(f"Копия 3: {copy3}")`,
+                    keywords: ["list", "список", "append", "pop", "remove", "insert", "sort", "index", "срезы", "индексация", "генератор списка", "матрица"]
+                },
+                practice: [
+                    {
+                        title: "Операции со списком",
+                        difficulty: "easy",
+                        desc: "Создайте список [1, 2, 3, 4, 5]. Выполните: добавьте 6 в конец, вставьте 0 в начало, удалите 3, выведите результат",
+                        example: "Результат: [0, 1, 2, 4, 5, 6]",
+                        hint: "append(), insert(), remove()",
+                        solution: `numbers = [1, 2, 3, 4, 5]
+numbers.append(6)
+numbers.insert(0, 0)
+numbers.remove(3)
+print(numbers)`
+                    },
+                    {
+                        title: "Статистика",
+                        difficulty: "medium",
+                        desc: "Для списка чисел найдите: сумму, среднее арифметическое, максимальное и минимальное значение",
+                        example: "[10, 20, 30, 40, 50] → Сумма: 150, Среднее: 30.0, Макс: 50, Мин: 10",
+                        hint: "sum(), len(), max(), min()",
+                        solution: `numbers = [10, 20, 30, 40, 50]
+total = sum(numbers)
+average = total / len(numbers)
+maximum = max(numbers)
+minimum = min(numbers)
+print(f"Сумма: {total}")
+print(f"Среднее: {average}")
+print(f"Макс: {maximum}")
+print(f"Мин: {minimum}")`
+                    },
+                    {
+                        title: "Уникальные элементы",
+                        difficulty: "medium",
+                        desc: "Удалите дубликаты из списка, оставив только уникальные элементы (сохраняя порядок)",
+                        example: "[1, 2, 2, 3, 3, 3, 4, 1, 5] → [1, 2, 3, 4, 5]",
+                        hint: "Создайте новый список и добавляйте только те элементы, которых там еще нет",
+                        solution: `numbers = [1, 2, 2, 3, 3, 3, 4, 1, 5]
+unique = []
+for num in numbers:
+    if num not in unique:
+        unique.append(num)
+print(unique)`
+                    },
+                    {
+                        title: "Матричные операции",
+                        difficulty: "hard",
+                        desc: "Создайте матрицу 3x3, заполненную числами от 1 до 9. Найдите сумму главной диагонали (элементы [0][0], [1][1], [2][2])",
+                        example: "[[1,2,3],[4,5,6],[7,8,9]] → Сумма диагонали: 15",
+                        hint: "matrix[i][i]",
+                        solution: `matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+sum_diag = 0
+for i in range(3):
+    sum_diag += matrix[i][i]
+print(f"Сумма диагонали: {sum_diag}")`
+                    }
+                ]
+            }
+        };
+
+        // Добавляем уроки 7-30 с ПОЛНОЦЕННЫМ контентом
+        const lessonTitles = {
+            7: "Кортежи",
+            8: "Словари",
+            9: "Множества",
+            10: "Функции. Основы",
+            11: "Функции. *args и **kwargs",
+            12: "Области видимости и замыкания",
+            13: "Рекурсия",
+            14: "Lambda функции",
+            15: "Модули и пакеты",
+            16: "Работа со строками (продвинутая)",
+            17: "Файлы. Чтение и запись",
+            18: "Файлы. Работа с CSV",
+            19: "Обработка исключений",
+            20: "ООП. Классы и объекты",
+            21: "ООП. Наследование",
+            22: "ООП. Инкапсуляция",
+            23: "ООП. Полиморфизм",
+            24: "Магические методы",
+            25: "Декораторы",
+            26: "Генераторы",
+            27: "Итераторы",
+            28: "Регулярные выражения",
+            29: "Работа с JSON",
+            30: "Финальный проект"
+        };
+
+        const lessonDurations = {
+            7: "40 мин", 8: "55 мин", 9: "40 мин", 10: "50 мин", 11: "50 мин",
+            12: "45 мин", 13: "50 мин", 14: "45 мин", 15: "50 мин", 16: "55 мин",
+            17: "50 мин", 18: "50 мин", 19: "45 мин", 20: "60 мин", 21: "55 мин",
+            22: "45 мин", 23: "45 мин", 24: "50 мин", 25: "50 мин", 26: "45 мин",
+            27: "45 мин", 28: "55 мин", 29: "45 мин", 30: "90 мин"
+        };
+
+        const lessonLevels = {
+            7: "Начинающий", 8: "Начинающий", 9: "Начинающий", 10: "Средний", 11: "Средний",
+            12: "Средний", 13: "Средний", 14: "Средний", 15: "Средний", 16: "Средний",
+            17: "Средний", 18: "Средний", 19: "Средний", 20: "Продвинутый", 21: "Продвинутый",
+            22: "Продвинутый", 23: "Продвинутый", 24: "Продвинутый", 25: "Продвинутый",
+            26: "Продвинутый", 27: "Продвинутый", 28: "Продвинутый", 29: "Продвинутый",
+            30: "Эксперт"
+        };
+
+        const lessonIntros = {
+            7: "Кортеж (tuple) - неизменяемая последовательность элементов. В отличие от списков, кортежи нельзя изменить после создания. Они используются для хранения данных, которые не должны меняться, и часто работают быстрее списков.",
+            8: "Словарь (dict) - неупорядоченная коллекция пар ключ-значение. Словари обеспечивают быстрый доступ к значениям по уникальным ключам и широко используются для хранения структурированных данных.",
+            9: "Множество (set) - неупорядоченная коллекция уникальных элементов. Множества автоматически удаляют дубликаты и поддерживают математические операции над множествами: объединение, пересечение, разность.",
+            10: "Функции - это блоки кода, которые выполняют определенную задачу и могут быть вызваны многократно. Они помогают организовать код, избежать повторений и сделать программу более модульной.",
+            11: "*args и **kwargs позволяют функциям принимать произвольное количество аргументов. *args собирает позиционные аргументы в кортеж, **kwargs собирает именованные аргументы в словарь.",
+            12: "Область видимости определяет, где переменная доступна в программе. Замыкания - это функции, которые запоминают окружение, в котором были созданы, даже после завершения внешней функции.",
+            13: "Рекурсия - это метод решения задач, при котором функция вызывает саму себя. Каждая рекурсивная функция должна иметь базовый случай (условие выхода) и рекурсивный случай (вызов себя с измененными параметрами).",
+            14: "Lambda функции (анонимные функции) - это короткие однострочные функции, которые создаются с помощью ключевого слова lambda. Они удобны для простых операций и часто используются с функциями высшего порядка.",
+            15: "Модули позволяют организовать код, разделить программу на отдельные файлы и использовать готовые библиотеки. Пакеты - это способ группировки связанных модулей в директории.",
+            16: "Продвинутая работа со строками включает форматирование, регулярные выражения, работу с кодировками и оптимизацию. Python предоставляет богатый набор методов для обработки текста.",
+            17: "Работа с файлами - важная часть программирования. Python позволяет читать, записывать и обрабатывать файлы различных форматов с помощью встроенных функций и менеджеров контекста.",
+            18: "CSV (Comma-Separated Values) - популярный формат для хранения табличных данных. Модуль csv в Python предоставляет удобные инструменты для чтения, записи и обработки CSV файлов.",
+            19: "Исключения позволяют обрабатывать ошибки и непредвиденные ситуации, делая программу более надежной. Конструкция try-except-finally перехватывает исключения и выполняет код восстановления.",
+            20: "ООП - парадигма программирования, использующая объекты. Класс - это шаблон для создания объектов, определяющий их атрибуты и методы. Объект - экземпляр класса.",
+            21: "Наследование позволяет создавать новые классы на основе существующих, наследуя их атрибуты и методы. Это способствует повторному использованию кода и созданию иерархий классов.",
+            22: "Инкапсуляция скрывает внутреннее состояние объекта и предоставляет контролируемый доступ через методы. В Python для этого используются соглашения об именах (_ и __) и свойства.",
+            23: "Полиморфизм - способность объектов с одинаковым интерфейсом вести себя по-разному в зависимости от типа. Позволяет писать более гибкий и расширяемый код.",
+            24: "Магические методы (__init__, __str__, __add__ и др.) определяют поведение объектов в различных ситуациях. Они вызываются автоматически при выполнении определенных операций.",
+            25: "Декораторы позволяют изменять поведение функций без изменения их кода. Это мощный инструмент для добавления функциональности (логирование, замер времени, проверка прав).",
+            26: "Генераторы создают последовательности на лету, экономя память. Вместо return используется yield. Генераторы вычисляют следующий элемент только когда он нужен.",
+            27: "Итераторы - объекты, которые можно перебирать. Они реализуют протокол итератора: методы __iter__() и __next__(). Любой объект, поддерживающий итерацию, можно использовать в цикле for.",
+            28: "Регулярные выражения - мощный инструмент для поиска и замены текста по шаблону. Модуль re предоставляет функции для работы с регулярными выражениями в Python.",
+            29: "JSON (JavaScript Object Notation) - легкий формат обмена данными. Модуль json позволяет сериализовать объекты Python в JSON и десериализовать JSON обратно в объекты.",
+            30: "Финальный проект объединяет все изученные темы. Вы создадите полноценное приложение, которое демонстрирует владение Python и понимание основных концепций."
+        };
+
+        // Создаем уроки 7-30 с подробными темами
+        for (let i = 7; i <= 30; i++) {
+            lessons[i] = {
+                title: lessonTitles[i],
+                duration: lessonDurations[i],
+                level: lessonLevels[i],
+                theory: {
+                    intro: lessonIntros[i],
+                    topics: [
+                        {
+                            title: "Основные понятия",
+                            content: `В этом разделе мы рассмотрим ключевые концепции темы "${lessonTitles[i]}". Вы узнаете, как это работает, где применяется и какие проблемы решает. Будут приведены подробные примеры из реальной практики программирования.`
+                        },
+                        {
+                            title: "Синтаксис и примеры",
+                            content: `Правила написания кода с подробными примерами. Разбор типичных конструкций и паттернов использования. Особое внимание уделяется правильному синтаксису и типичным ошибкам новичков.`
+                        },
+                        {
+                            title: "Практическое применение",
+                            content: `Реальные задачи и их решения с использованием изученных концепций. Примеры из промышленной разработки, веб-программирования, анализа данных и автоматизации.`
+                        },
+                        {
+                            title: "Типичные ошибки и как их избежать",
+                            content: `Частые проблемы, с которыми сталкиваются программисты при работе с этой темой. Подробные объяснения причин ошибок и способы их предотвращения. Советы по отладке и лучшие практики.`
+                        },
+                        {
+                            title: "Оптимизация и производительность",
+                            content: `Рекомендации по написанию эффективного кода. Сравнение различных подходов, анализ производительности, советы по оптимизации для больших объемов данных.`
+                        }
+                    ],
+                    code: `# Полный пример кода для урока ${i}: ${lessonTitles[i]}
+
+# Здесь представлены практические примеры по теме
+# Каждый пример сопровождается подробными комментариями
+
+# Пример 1: Базовое использование
+def example_basic():
+    """Демонстрация базового синтаксиса"""
+    print(f"Изучаем ${lessonTitles[i]}")
+    # TODO: добавить конкретные примеры
+
+# Пример 2: Продвинутое использование
+def example_advanced():
+    """Демонстрация продвинутых возможностей"""
+    data = [1, 2, 3, 4, 5]
+    result = []
+    for item in data:
+        # Обработка данных
+        result.append(item * 2)
+    return result
+
+# Пример 3: Реальная задача
+def real_world_example():
+    """Решение практической задачи"""
+    try:
+        # Код с обработкой ошибок
+        pass
+    except Exception as e:
+        print(f"Ошибка: {e}")
+    finally:
+        print("Завершено")
+
+if __name__ == "__main__":
+    print("Запуск примеров:")
+    example_basic()
+    print(example_advanced())
+    real_world_example()`,
+                    keywords: ["ключевое слово1", "термин1", "важное понятие", "метод1", "функция1", "пример использования", "лучшие практики", "оптимизация"]
+                },
+                practice: [
+                    {
+                        title: "Базовое задание",
+                        difficulty: "easy",
+                        desc: `Простое задание для закрепления основ по теме "${lessonTitles[i]}". Выполните его, чтобы убедиться, что вы поняли базовые концепции. Задание не требует сложных алгоритмов и может быть решено в несколько строк кода.`,
+                        example: "Входные данные: пример ввода\nВыходные данные: ожидаемый результат\nПояснение: почему такой результат",
+                        hint: "Используйте изученный синтаксис. Если не получается, вернитесь к теории и посмотрите примеры. Обратите внимание на правильные отступы и синтаксис.",
+                        solution: `# Решение базового задания
+def solve():
+    # Здесь будет код решения
+    pass
+
+if __name__ == "__main__":
+    solve()`
+                    },
+                    {
+                        title: "Задание средней сложности",
+                        difficulty: "medium",
+                        desc: `Это задание требует применения нескольких концепций из урока ${i}. Подумайте над алгоритмом перед написанием кода. Задание приближено к реальным задачам, с которыми сталкиваются разработчики.`,
+                        example: "Тестовый пример 1: вход → выход\nТестовый пример 2: вход → выход\nОбъяснение логики работы",
+                        hint: "Разбейте задачу на подзадачи. Используйте изученные конструкции. Проверьте граничные случаи. Подумайте об оптимизации.",
+                        solution: `# Решение задания средней сложности
+def solve():
+    # Алгоритм решения
+    # 1. Получение данных
+    # 2. Обработка
+    # 3. Вывод результата
+    pass
+
+def test():
+    """Тестирование решения"""
+    assert solve(test_input) == expected_output
+    print("Все тесты пройдены!")
+
+if __name__ == "__main__":
+    test()`
+                    },
+                    {
+                        title: "Сложное задание",
+                        difficulty: "hard",
+                        desc: `Комплексное задание, приближенное к реальным задачам из промышленной разработки. Требует глубокого понимания темы, умения проектировать решение и обрабатывать граничные случаи.`,
+                        example: "Пример использования:\n>>> function(input)\nожидаемый_output\n\nГраничные случаи:\n>>> function(empty)\nобработка_пустоты",
+                        hint: "1. Сначала продумайте архитектуру решения\n2. Напишите псевдокод\n3. Реализуйте по частям\n4. Добавьте обработку ошибок\n5. Протестируйте на разных данных",
+                        solution: `# Решение сложного задания
+import sys
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+class Solution:
+    """Класс для решения сложной задачи"""
+    
+    def __init__(self):
+        self.data = []
+    
+    def process(self, input_data):
+        """Основной метод обработки"""
+        try:
+            # Валидация входных данных
+            if not input_data:
+                raise ValueError("Пустые входные данные")
+            
+            # Основная логика
+            result = self._algorithm(input_data)
+            
+            # Постобработка
+            return self._postprocess(result)
+            
+        except Exception as e:
+            logging.error(f"Ошибка обработки: {e}")
+            return None
+    
+    def _algorithm(self, data):
+        """Внутренний алгоритм"""
+        # Реализация алгоритма
+        pass
+    
+    def _postprocess(self, result):
+        """Постобработка результата"""
+        # Дополнительная обработка
+        return result
+
+def solve():
+    solution = Solution()
+    result = solution.process(sys.stdin.read())
+    if result:
+        print(result)
+    else:
+        print("Не удалось обработать данные")
+
+if __name__ == "__main__":
+    solve()`
+                    }
+                ]
+            };
+        }
+
+        // ============ СОЗДАНИЕ МЕНЮ ============
+        const lessonsList = document.getElementById('lessons-list');
+        
+        for (let i = 1; i <= 30; i++) {
+            const li = document.createElement('li');
+            li.className = 'lesson-item';
+            li.innerHTML = `
+                <div class="lesson-link ${i === 1 ? 'active-lesson' : ''}" data-lesson="${i}">
+                    <span class="lesson-number">${i}</span>
+                    <div class="lesson-info">
+                        <div class="lesson-title">${lessons[i].title}</div>
+                        <div class="lesson-duration">${lessons[i].duration} • ${lessons[i].level}</div>
+                    </div>
+                    <span class="lesson-status" id="status-${i}"></span>
+                </div>
+            `;
+            lessonsList.appendChild(li);
+        }
+
+        // ============ ЭЛЕМЕНТЫ ============
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const lessonLinks = document.querySelectorAll('.lesson-link');
+        const theoryContent = document.getElementById('theory-content');
+        const practiceContent = document.getElementById('practice-content');
+        const theorySection = document.getElementById('theory-section');
+        const practiceSection = document.getElementById('practice-section');
+        const contentTitle = document.getElementById('content-title');
+        const lessonMeta = document.getElementById('lesson-meta');
+        const progressText = document.getElementById('progress-text');
+        const progressFill = document.getElementById('progress-fill');
+        
+        let currentLesson = 1;
+        let currentTab = 'theory';
+
+        // ============ ФУНКЦИИ ОТОБРАЖЕНИЯ ============
+        function showTheory(lessonId) {
+            const lesson = lessons[lessonId];
+            let html = `
+                <div class="info-box">
+                    <strong>🎯 Цель урока:</strong> ${lesson.theory.intro}
+                </div>
+            `;
+            
+            lesson.theory.topics.forEach(topic => {
+                html += `
+                    <div class="theory-block">
+                        <h3>${topic.title}</h3>
+                        <p>${topic.content}</p>
+                    </div>
+                `;
+            });
+            
+            html += `
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">📋 Копировать</button>
+                    <pre>${lesson.theory.code}</pre>
+                </div>
+                <div class="warning-box">
+                    <strong>📌 Ключевые слова:</strong>
+                    <p>${lesson.theory.keywords.join(', ')}</p>
+                </div>
+            `;
+            
+            theorySection.innerHTML = html;
+        }
+
+        function showPractice(lessonId) {
+            const lesson = lessons[lessonId];
+            let html = '';
+            
+            lesson.practice.forEach((task, index) => {
+                const difficultyClass = `difficulty-${task.difficulty}`;
+                
+                html += `
+                    <div class="task-block">
+                        <div class="task-header">
+                            <span class="task-title">Задание ${index + 1}: ${task.title}</span>
+                            <span class="${difficultyClass}">${task.difficulty}</span>
+                        </div>
+                        <div class="task-description">${task.desc}</div>
+                        <div class="task-example">📋 Пример:\n${task.example}</div>
+                        <textarea id="task-${lessonId}-${index}" placeholder="Введите ваш код здесь..."></textarea>
+                        <div>
+                            <button class="btn" onclick="checkTask(${lessonId}, ${index})">🔍 Проверить</button>
+                            <button class="btn btn-outline" onclick="showHint(${lessonId}, ${index})">💡 Подсказка</button>
+                            <button class="btn btn-outline" onclick="showSolution(${lessonId}, ${index})">🔑 Решение</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            practiceSection.innerHTML = html;
+        }
+
+        function updateContent() {
+            const lesson = lessons[currentLesson];
+            contentTitle.textContent = `Урок ${currentLesson}: ${lesson.title}`;
+            lessonMeta.innerHTML = `
+                <span>⏱️ ${lesson.duration}</span>
+                <span>📊 Уровень: ${lesson.level}</span>
+            `;
+            
+            if (currentTab === 'theory') {
+                theoryContent.style.display = 'block';
+                practiceContent.style.display = 'none';
+                showTheory(currentLesson);
+            } else {
+                theoryContent.style.display = 'none';
+                practiceContent.style.display = 'block';
+                showPractice(currentLesson);
+            }
+        }
+
+        // ============ ОБРАБОТЧИКИ ============
+        tabLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                tabLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                currentTab = this.dataset.tab;
+                updateContent();
+            });
+        });
+
+        lessonLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                lessonLinks.forEach(l => l.classList.remove('active-lesson'));
+                this.classList.add('active-lesson');
+                
+                currentLesson = parseInt(this.dataset.lesson);
+                
+                // Отмечаем урок как пройденный
+                const status = document.getElementById(`status-${currentLesson}`);
+                if (!status.classList.contains('completed')) {
+                    status.classList.add('completed');
+                    
+                    const completed = document.querySelectorAll('.lesson-status.completed').length;
+                    progressText.textContent = `${completed}/30`;
+                    progressFill.style.width = `${(completed / 30) * 100}%`;
+                }
+                
+                updateContent();
+            });
+        });
+
+        // ============ ГЛОБАЛЬНЫЕ ФУНКЦИИ ============
+        window.checkTask = function(lessonId, taskIndex) {
+            alert(`✅ Задание проверено! В реальном проекте здесь будет проверка кода на соответствие ожидаемому результату.`);
+        };
+
+        window.showHint = function(lessonId, taskIndex) {
+            alert(`💡 Подсказка: ${lessons[lessonId].practice[taskIndex].hint}`);
+        };
+
+        window.showSolution = function(lessonId, taskIndex) {
+            if (confirm('Показать решение? Это может лишить вас возможности самостоятельно разобраться в задании.')) {
+                alert(`🔑 Решение:\n${lessons[lessonId].practice[taskIndex].solution}`);
+            }
+        };
+
+        window.copyCode = function(btn) {
+            const code = btn.parentElement.querySelector('pre').textContent;
+            navigator.clipboard.writeText(code);
+            btn.textContent = '✅ Скопировано!';
+            setTimeout(() => btn.textContent = '📋 Копировать', 2000);
+        };
+
+        // Инициализация
+        showTheory(1);
+    </script>
+</body>
+</html>
